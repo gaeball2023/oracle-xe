@@ -170,7 +170,7 @@ WHERE department_id = 60;
 
 
 /*
-NYL() 함수 
+NVL() 함수 
     null 값을 실제 값으로 반환합니다.
     null은 연산이 안됩니다. 
 */
