@@ -43,10 +43,11 @@ CREATE TABLE dept2 AS SELECT * FROM dept;
 SELECT * FROM dept2;
 
 -- 테이블 구조만 복사
-CREATE TABLE dept2 AS SELECT * FROM dept WHERE 1=2;
+CREATE TABLE dept3 AS SELECT * FROM dept WHERE 1=2;
 
 SELECT * FROM dept3;
 
+COMMIT;
 
 /*
 ALTER 문
@@ -82,14 +83,59 @@ ALTER TABLE simple DROP(addr);
     FOREIGN KEY(외래키)
        부모 테이블의 PRIMARY KEY를 참조하는 컬럼에 붙이는 제약조건입니다.
 */
-
 CREATE TABLE dept4(
       deptno NUMBER(2) constraint dept4_deptno_pk PRIMARY KEY,
       dname VARCHAR2(15) DEFAULT '영업부',
       loc CHAR(1) constraint dept4_loc_ck CHECK(loc in('1', '2'))
       );
- 
       
+INSERT INTO dept4 (deptno, dname, loc)
+VALUES(1, '마켓팅', 1);
+COMMIT;
+
+SELECT * FROM dept4;
+
+CREATE TABLE dept5(
+deptno NUMBER(2) PRIMARY KEY, 
+dname VARCHAR2(15) NOT NULL
+);
+
+INSERT INTO dept5 (deptno, dname)
+VALUES(1, 'QA');
+
+CREATE TABLE emp(
+empno NUMBER(4) PRIMARY KEY,
+ename VARCHAR2(15) NOT NULL,
+deptno NUMBER(2),
+CONSTRAINT emp_dept5_fk FOREIGN KEY (deptno)
+   REFERENCES dept5(deptno)
+);   
+     
+SELECT * FROM dept5;
+
+INSERT INTO emp
+VALUES (1, 'MIKE', 1);
+COMMIT;
+
+DELETE FROM emp
+WHERE deptno =1;
+ 
+SELECT * FROM emp;
+
+
+-- 제약 조건 검색하기
+SELECT * FROM user_constraints
+WHERE constraint_name = 'DEPT4_DEPTNO_PK';
+
+-- 제약 조건은 수정 불가능, 삭제만 가능합니다.
+ALTER TABLE dept4 DROP CONSTRAINT dept4_loc_ck;
+
+-- 제약 조건 추가하기
+ALTER TABLE dept4 ADD(CONSTRAINT dept4_loc2_ck CHECK(loc IN('1', '2')));
+
+
+
+     
       
        
        
