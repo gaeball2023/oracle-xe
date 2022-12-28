@@ -18,7 +18,7 @@ SET SERVEROUTPUT ON
 SET TIMING ON
 
 DECLARE -- 변수를 정의하는 영역
-    V_STRD_DT VARCHAR();
+    V_STRD_DT VARCHAR2(8);
     V_STRD_DEPTNO NUMBER;
     
     V_DEPTNO NUMBER;
@@ -48,12 +48,13 @@ BEGIN -- 작업 영역
     -- 조회 결과 변수 설정
     V_RESULT MSG := 'RESULT > DEPTNO='||V_DEPTNO||', DNAME='||V_DNAME||', LOC='||V_LOC;
     
-    -- 조회 결과 출력 DBM
+    -- 조회 결과 출력 -> DBMS_OUTPUT.PUT_LINE( V_RESULT_MSG );
     DBMS_OUTPUT.PUT_LINE( V_RESULT_MSG );
     
 -- 예외처리 
+ EXCEPTION
  WHEN OTHERS THEN
-  V_RESULT_MSG := 'SQLCODE('||SQLCODE||'), MESSAGE =>'||SQLEPRM;
+  V_RESULT_MSG := 'SQLCODE['||SQLCODE||'], MESSAGE =>'||SQLEPRM;
   DBMS_OUTPUT.PUT_LINE( V_RESULT_MSG );
   
 END; -- 작업종료
