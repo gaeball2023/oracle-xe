@@ -71,13 +71,20 @@ WHERE cpu_time > 20000;
 -- 전날 컴퓨터에서 로그인한 현재세션은 어느것입니까?
 SELECT * FROM v$session
 WHERE 1=1
---AND machine = 'DESKTOP-
+AND machine = 'DESKTOP-Q2FMHK6'
 AND logon_time > SYSDATE - 1;
 
 -- 현재 다른 위치를 차단중인 LOCK을 보유하고 있는 세션의 세션ID 무엇이며
--- LOCK 상태가 얼마동안 유지되고 있습니까?
-SELELCT sid, ctime FROM v$lock
-WHERE block > 0;
+-- LOCK 상태가 얼마동안 유지되고 있습니까? (화요일)
+SELECT 
+    a.sid,             -- SID
+    b.serial#,         -- 시리얼
+    a.ctime            -- 세션허가된 이후부터 경과시간
+FROM v$lock a,
+    v$session b
+WHERE 1=1
+AND a.sid = b.sid
+AND block > 0;
 
 desc v$session;
 select * FROM v$session;
@@ -105,6 +112,8 @@ WHERE 1=1
 -- 유저 세션 KILL
 ALTER SYSTEM KILL SESSION 'SID, 시리얼번호';
 
+
+ALTER SYSTEM KILL SESSION '259, 60160';
 
 
 
